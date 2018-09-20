@@ -1,5 +1,5 @@
 <design:component >
-  <design:attribute name="predDefId" abel="Prediction Definition Id" Description="Prediction Definition to use when scoring"/>
+  <design:attribute name="predDefId" label="Prediction Definition Id" Description="Prediction Definition to use when scoring"/>
   <design:attribute name="cardLabel" label="Card title" Description="Label at top of card"/>
   <design:attribute name="cardLabelColor" label="Card title color" Description="Color of label at top of card"/>
   <design:attribute name="headerLogoIcon" label="Header logo" Description="Icon to show on right-side of header section"/> 

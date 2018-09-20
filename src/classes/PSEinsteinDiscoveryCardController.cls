@@ -123,14 +123,14 @@ public class PSEinsteinDiscoveryCardController {
     	return reasons;
     }
     
-    private String makeNumberStr(Doublt num) {
+    private String makeNumberStr(Double num) {
     	String out = '';
     	if (num >= 0) {
 			out += '+ ';
 		} else {
 			out += '- ';
 		}
-    	out += num;
+    	out += String.valueOf(num);
     	
     	return out;
     }
