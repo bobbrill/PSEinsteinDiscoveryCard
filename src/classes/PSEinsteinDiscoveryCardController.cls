@@ -116,8 +116,9 @@ public class PSEinsteinDiscoveryCardController {
     	}
     	
     	if (prediction.baseLine != null && prediction.baseLine != 0) {
-    		reasons += '\nfrom baseline, ';
+    		reasons += '\n';
     		reasons += makeNumberStr(prediction.baseLine);
+    		reasons += ' from the baseline';
     	}
     	
     	return reasons;
