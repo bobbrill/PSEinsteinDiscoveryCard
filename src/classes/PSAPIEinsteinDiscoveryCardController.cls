@@ -146,7 +146,7 @@ public class PSAPIEinsteinDiscoveryCardController {
 		}
 		
 		if (scale != null) {
-    		out += math.abs(num).setScale(scale);
+    		out += math.abs(num).setScale(2);
 		} else {
 			out += String.valueOf(math.abs(num));
 		}
