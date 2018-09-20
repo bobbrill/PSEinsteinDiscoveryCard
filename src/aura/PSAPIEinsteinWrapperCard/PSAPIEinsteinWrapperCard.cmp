@@ -1,7 +1,7 @@
 <aura:component extensible="true" abstract="true">
-    <aura:attribute name="headerBackgroundImage" type="String" default="/resource/PSEinsteinImages/einstein_header_background.svg"></aura:attribute>
+    <aura:attribute name="headerBackgroundImage" type="String" default="/resource/PSAPIEinsteinImages/einstein_header_background.svg"></aura:attribute>
     <aura:attribute name="headerBackgroundColor" type="String" default=""></aura:attribute>
-    <aura:attribute name="headerLogoIcon" type="String" default="/resource/PSEinsteinImages/einstein_header_icon.svg"></aura:attribute>
+    <aura:attribute name="headerLogoIcon" type="String" default="/resource/PSAPIEinsteinImages/einstein_header_icon.svg"></aura:attribute>
     <aura:attribute name="cardLabel" type="String" default="Card Title"></aura:attribute>
     <aura:attribute name="cardLabelColor" type="String" default="#15325A"></aura:attribute>
     <aura:attribute name="hasData" type="Boolean" default="true"></aura:attribute>
