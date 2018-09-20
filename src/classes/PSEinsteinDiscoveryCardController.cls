@@ -130,7 +130,7 @@ public class PSEinsteinDiscoveryCardController {
 		} else {
 			out += '- ';
 		}
-    	out += String.valueOf(num);
+    	out += String.valueOf(math.abs(num));
     	
     	return out;
     }
