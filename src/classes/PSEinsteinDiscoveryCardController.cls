@@ -75,7 +75,7 @@ public class PSEinsteinDiscoveryCardController {
     }
     
     private static Double getPrediction(ConnectApi.SmartDataDiscoveryPredict prediction) {
-        return prediction.getTotal();
+        return prediction.total;
     }
     
     private static String getReasons(ConnectApi.SmartDataDiscoveryPredict prediction) {
@@ -88,36 +88,36 @@ public class PSEinsteinDiscoveryCardController {
 		String reasons = '';
 		
 		boolean skipReturn = true;
-		for (ConnectApi.SmartDataDiscoveryPredictCondition midVal : prediction.getMiddleValues()) {
+		for (ConnectApi.SmartDataDiscoveryPredictCondition midVal : prediction.middleValues) {
 			if (!skipReturn) {
 				reasons += '\n';
 			} else {
 				skipReturn = false;
 			}
 			
-			reasons += makeNumberStr(midVal.getValue());
+			reasons += makeNumberStr(midVal.value);
 			reasons += ' because ';
-			reasons += midVal.getColumns().get(0).getColumnName();
+			reasons += midVal.columns.get(0).columnName;
 			reasons += ' is '; 
-			reasons += midVal.getColumns().get(0).getColumnValue();
+			reasons += midVal.columns.get(0).columnValue;
 			
-			if (midVal.getColumns().size() > 1) {
+			if (midVal.columns.size() > 1) {
 				reasons += ' and ';
-				reasons += midVal.getColumns().get(1).getColumnName();
+				reasons += midVal.columns.get(1).columnName;
 				reasons += ' is '; 
-				reasons += midVal.getColumns().get(1).getColumnValue();
+				reasons += midVal.columns.get(1).columnValue;
 			}
 		}
 		
-    	if (prediction.getOther() != null && prediction.getOther() != 0) {
+    	if (prediction.other != null && prediction.other != 0) {
     		reasons += '\n';
-    		reasons += makeNumberStr(prediction.getOther());
+    		reasons += makeNumberStr(prediction.other);
     		reasons += ' because of other factors';
     	}
     	
-    	if (prediction.getBaseLine() != null && prediction.getBaseLine() != 0) {
+    	if (prediction.baseLine != null && prediction.baseLine != 0) {
     		reasons += '\nfrom baseline, ';
-    		reasons += makeNumberStr(prediction.getBaseLine());
+    		reasons += makeNumberStr(prediction.baseLine);
     	}
     	
     	return reasons;
