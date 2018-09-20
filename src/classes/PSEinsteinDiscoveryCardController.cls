@@ -13,16 +13,16 @@ public class PSEinsteinDiscoveryCardController {
             String predDefId = paramMap.get('predDefId');
             
             ConnectApi.SmartDataDiscoveryPredictInput inputRep = new ConnectApi.SmartDataDiscoveryPredictInput();
-            inputRep.setEntityId(recId);
-        	inputRep.setPredictionDefinitionId(predDefId);
+            inputRep.entityId = recId;
+        	inputRep.predictionDefinitionId = predDefId;
         
         	// using the connect api here - could be REST just as easilly
-            ConnectApi.SmartDataDiscoveryPrediction prediction = ConnectApi.SmartDataDiscovery.predict(inputRep);
+            ConnectApi.SmartDataDiscoveryPrediction predOut = ConnectApi.SmartDataDiscovery.predict(inputRep);
             
             Map<String, Object>respMap = new Map<String, Object>();
-            respMap.put("prediction", getPrediction(prediction.getPrediction()));
-            respMap.put("reasons", getReasons(prediction.getPrediction()));
-            respMap.put("prescriptions", getPrescription(prediction.getPrescriptions()));
+            respMap.put('prediction', getPrediction(predOut.prediction));
+            respMap.put('reasons', getReasons(predOut.prediction));
+            respMap.put('prescriptions', getPrescription(predOut.prescriptions));
              
             resp.data = respMap;
         }
@@ -35,7 +35,7 @@ public class PSEinsteinDiscoveryCardController {
         return  JSON.serialize(resp);
     }
     
-    private static String serializePrescriptions(List<SmartDataDiscoveryPredictConditionRepresentation> conditions) {
+    private static String serializePrescriptions(List<ConnectApi.SmartDataDiscoveryPredictCondition> conditions) {
         // expected string output:
     	//	+10.398 if you change Owner_Name__c to Deeann Alvidrez
     	//	+9.344 if you change Owner_Name__c to Rebecca Streets
@@ -57,17 +57,17 @@ public class PSEinsteinDiscoveryCardController {
 				prescriptions = false;
 			}
 			
-			prescriptions += makeNumberStr(condition.getValue());
+			prescriptions += makeNumberStr(condition.value);
 			prescriptions += ' if you change ';
-			prescriptions += condition.getColumns().get(0).getColumnName();
+			prescriptions += condition.columns.get(0).columnName;
 			prescriptions += ' to '; 
-			prescriptions += condition.getColumns().get(0).getColumnValue();
+			prescriptions += condition.columns.get(0).columnValue;
 			
-			if (condition.getColumns().size() > 1) {
+			if (condition.columns.size() > 1) {
 				prescriptions += ' and ';
-				prescriptions += condition.getColumns().get(1).getColumnName();
+				prescriptions += condition.columns.get(1).columnName;
 				prescriptions += ' to '; 
-				prescriptions += condition.getColumns().get(1).getColumnValue();
+				prescriptions += condition.columns.get(1).columnValue;
 			}
 		}
 		
