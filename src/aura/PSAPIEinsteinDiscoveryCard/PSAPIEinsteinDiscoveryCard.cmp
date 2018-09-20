@@ -1,6 +1,7 @@
 <aura:component extends="c:PSAPIEinsteinWrapperCard" controller="PSAPIEinsteinDiscoveryCardController" implements="flexipage:availableForRecordHome,flexipage:availableForAllPageTypes,force:hasRecordId" access="global" >
     <ltng:require scripts="/resource/PSJquery172JS" afterScriptsLoaded="{!c.doInit}"	/>
     <aura:attribute name="predDefId" type="String" default=""/>
+    
     <aura:attribute name="outcomeLabel" type="String" default="Outcome Label"/>
     <aura:attribute name="outcomeUnit" type="String" default=""/>
     <aura:attribute name="outcomeUnitBefore" type="Boolean" default="false"/>
@@ -8,10 +9,14 @@
     <aura:attribute name="outcomeColor" type="String" default="0,25|25,75|75,100"/>
     <aura:attribute name="section1Label" type="String" default="Leading Causes"/>
     <aura:attribute name="section1EmptyMsg" type="String" default="No causes detected"/>
+    <aura:attribute name="section1Scale" type="Number" default=2/>
+    <aura:attribute name="section1Limit" type="Number" default=0/>
     <aura:attribute name="section1Color" type="String" default="-100,0|0,0|0,100"/>
     <aura:attribute name="section2Label" type="String" default="How to Improve This"/>
     <aura:attribute name="section2EmptyMsg" type="String" default="No recommendations detected"/>
     <aura:attribute name="section2Color" type="String" default="-100,0|0,0|0,100"/>
+    <aura:attribute name="section2Scale" type="Number" default=2/>
+    <aura:attribute name="section2Limit" type="Number" default=0/>
     
     
     <aura:handler event="force:refreshView" action="{!c.doInit}" />

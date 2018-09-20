@@ -12,8 +12,12 @@
   <design:attribute name="outcomeColor" label="Color range definition for red,yellow,green" Description="Color range definition for red,yellow,green"/> 
   <design:attribute name="section1Label" label="Label for section 1" Description="Label for section 1"/> 
   <design:attribute name="section1EmptyMsg" label="Empty msg for section 1" Description="Empty msg for section 1"/> 
-  <design:attribute name="section1Color" label="Section 1 color range definition for red,yellow,green" Description="Color range definition for red,yellow,green"/> 
+  <design:attribute name="section1Color" label="Section 1 color range definition for red,yellow,green" Description="Color range definition for red,yellow,green"/>  
+  <design:attribute name="section1Scale" label="Section 1 decimal places" Description="Number of decimal places to show"/>
+  <design:attribute name="section1Limit" label="Section 1 limit" Description="Number of results to show. If this is less than or equal to 0, shows all."/>
   <design:attribute name="section2Label" label="Label for section 2" Description="Label for section 2"/> 
   <design:attribute name="section2EmptyMsg" label="Empty msg for section 2" Description="Empty msg for section 2"/> 
   <design:attribute name="section2Color" label="Section 2 color range definition for red,yellow,green" Description="Color range definition for red,yellow,green"/> 
+  <design:attribute name="section2Scale" label="Section 2 decimal places" Description="Number of decimal places to show"/>
+  <design:attribute name="section2Limit" label="Section 2 limit" Description="Number of results to show. If this is less than or equal to 0, shows all."/>
 </design:component>

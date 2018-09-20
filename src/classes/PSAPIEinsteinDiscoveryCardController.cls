@@ -21,8 +21,8 @@ public class PSAPIEinsteinDiscoveryCardController {
             
             Map<String, Object>respMap = new Map<String, Object>();
             respMap.put('prediction', getPrediction(predOut.prediction));
-            respMap.put('reasons', getReasons(predOut.prediction));
-            respMap.put('prescriptions', getPrescriptions(predOut.prescriptions));
+            respMap.put('reasons', getReasons(predOut.prediction, paramMap.get('section1Scale'), paramMap.get('section1Limit')));
+            respMap.put('prescriptions', getPrescriptions(predOut.prescriptions, paramMap.get('section2Scale'), paramMap.get('section2Limit')));
              
             resp.data = respMap;
         }
@@ -35,7 +35,10 @@ public class PSAPIEinsteinDiscoveryCardController {
         return  JSON.serialize(resp);
     }
     
-    private static String getPrescriptions(List<ConnectApi.SmartDataDiscoveryPredictCondition> conditions) {
+    private static String getPrescriptions(List<ConnectApi.SmartDataDiscoveryPredictCondition> conditions, String scale, String lim) {
+        Integer scaleInt = scale != null ? Integer.valueOf(scale) : null;
+        Integer limInt = lim != null ? Integer.valueOf(lim) : null;
+        
         // expected string output:
     	//	+10.398 if you change Owner_Name__c to Deeann Alvidrez
     	//	+9.344 if you change Owner_Name__c to Rebecca Streets
@@ -49,15 +52,13 @@ public class PSAPIEinsteinDiscoveryCardController {
     	//	+4.116 if you change Owner_Name__c to Hollis Litz
     	String prescriptions = '';
     	
-        boolean skipReturn = true;
+        int numPrescriptions = 0;
 		for (ConnectApi.SmartDataDiscoveryPredictCondition condition : conditions) {
-			if (!skipReturn) {
+			if (numPrescriptions > 0) {
 				prescriptions += '\n';
-			} else {
-				skipReturn = false;
-			}
+			} 
 			
-			prescriptions += makeNumberStr(condition.value);
+			prescriptions += makeNumberStr(condition.value, scaleInt);
 			prescriptions += ' if you change ';
 			prescriptions += condition.columns.get(0).columnName;
 			prescriptions += ' to '; 
@@ -69,6 +70,11 @@ public class PSAPIEinsteinDiscoveryCardController {
 				prescriptions += ' to '; 
 				prescriptions += condition.columns.get(1).columnValue;
 			}
+			
+			numPrescriptions++;
+			if (limInt != null && limInt > 0 && limInt <= numPrescriptions) {
+				break;
+			}
 		}
 		
 		return prescriptions;
@@ -78,8 +84,11 @@ public class PSAPIEinsteinDiscoveryCardController {
         return prediction.total;
     }
     
-    private static String getReasons(ConnectApi.SmartDataDiscoveryPredict prediction) {
-    	// expected string output:
+    private static String getReasons(ConnectApi.SmartDataDiscoveryPredict prediction, String scale, String lim) {
+    	Integer scaleInt = scale != null ? Integer.valueOf(scale) : null;
+        Integer limInt = lim != null ? Integer.valueOf(lim) : null;
+        
+        // expected string output:
     	//	+1.546 because requestor__c is 1400 to 1600 and Priority__c is 0 - Unassigned
 		//	+1.264 because TicketType__c is Request and Severity__c is 4 - Critical
 		//	-1.107 because requestor__c is 1400 to 1600 and Owner_Name__c is Tianna Bryden
@@ -87,12 +96,10 @@ public class PSAPIEinsteinDiscoveryCardController {
 		//	from the baseline, +46.233
 		String reasons = '';
 		
-		boolean skipReturn = true;
+		int numReasons = 0;
 		for (ConnectApi.SmartDataDiscoveryPredictCondition midVal : prediction.middleValues) {
-			if (!skipReturn) {
+			if (numReasons > 0) {
 				reasons += '\n';
-			} else {
-				skipReturn = false;
 			}
 			
 			reasons += makeNumberStr(midVal.value);
@@ -107,8 +114,14 @@ public class PSAPIEinsteinDiscoveryCardController {
 				reasons += ' is '; 
 				reasons += midVal.columns.get(1).columnValue;
 			}
+			
+			numReasons++;
+			if (limInt != null && limInt > 0 && limInt <= numReasons) {
+				break;
+			}
 		}
 		
+		// always include other and baseline
     	if (prediction.other != null && prediction.other != 0) {
     		reasons += '\n';
     		reasons += makeNumberStr(prediction.other);
@@ -124,15 +137,20 @@ public class PSAPIEinsteinDiscoveryCardController {
     	return reasons;
     }
     
-    private static String makeNumberStr(Double num) {
+    private static String makeNumberStr(Double num, Integer scale) {
     	String out = '';
     	if (num >= 0) {
 			out += '+ ';
 		} else {
 			out += '- ';
 		}
-    	out += math.abs(num).format();
-    	
+		
+		if (scale != null) {
+    		out += math.abs(num).setScale(scale);
+		} else {
+			out += String.valueOf(math.abs(num));
+		}
+		
     	return out;
     }
 }

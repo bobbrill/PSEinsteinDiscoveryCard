@@ -8,13 +8,21 @@
         var paramMap = {};
             paramMap['recId'] = recid;
             paramMap['predDefId'] = component.get("v.predDefId");
-            if (component.get("v.section1Label") != null) 
+            if (component.get("v.section1Limit") != null) 
             {
-                paramMap['section1Label'] = component.get("v.section1Label");
+                paramMap['section1Limit'] = component.get("v.section1Limit");
             }
-            if (component.get("v.section2Label") != null) 
+            if (component.get("v.section1Scale") != null) 
             {
-              paramMap['section2Label'] = component.get("v.section2Label");
+              paramMap['section1Scale'] = component.get("v.section1Scale");
+            }
+            if (component.get("v.section2Limit") != null) 
+            {
+                paramMap['section2Limit'] = component.get("v.section2Limit");
+            }
+            if (component.get("v.section2Scale") != null) 
+            {
+              paramMap['section2Scale'] = component.get("v.section2Scale");
             }
 
             action.setParams({
