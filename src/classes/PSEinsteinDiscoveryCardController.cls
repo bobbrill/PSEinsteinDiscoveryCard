@@ -17,12 +17,12 @@ public class PSEinsteinDiscoveryCardController {
         	inputRep.setPredictionDefinitionId(predDefId);
         
         	// using the connect api here - could be REST just as easilly
-            ConnectApi.SmartDataDiscoveryPrediction predition = ConnectApi.SmartDataDiscovery.predict(inputRep);
+            ConnectApi.SmartDataDiscoveryPrediction prediction = ConnectApi.SmartDataDiscovery.predict(inputRep);
             
             Map<String, Object>respMap = new Map<String, Object>();
-            respMap.put("prediction", getPrediction(predition.getPrediction()));
-            respMap.put("reasons", getReasons(predition.getPrediction()));
-            respMap.put("prescriptions", getPrescription(predition.getPrescriptions()));
+            respMap.put("prediction", getPrediction(prediction.getPrediction()));
+            respMap.put("reasons", getReasons(prediction.getPrediction()));
+            respMap.put("prescriptions", getPrescription(prediction.getPrescriptions()));
              
             resp.data = respMap;
         }
