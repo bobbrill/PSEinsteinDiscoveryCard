@@ -52,7 +52,7 @@ public class PSAPIEinsteinDiscoveryCardController {
     	//	+4.116 if you change Owner_Name__c to Hollis Litz
     	String prescriptions = '';
     	
-        int numPrescriptions = 0;
+        Integer numPrescriptions = 0;
 		for (ConnectApi.SmartDataDiscoveryPredictCondition condition : conditions) {
 			if (numPrescriptions > 0) {
 				prescriptions += '\n';
@@ -96,7 +96,7 @@ public class PSAPIEinsteinDiscoveryCardController {
 		//	from the baseline, +46.233
 		String reasons = '';
 		
-		int numReasons = 0;
+		Integer numReasons = 0;
 		for (ConnectApi.SmartDataDiscoveryPredictCondition midVal : prediction.middleValues) {
 			if (numReasons > 0) {
 				reasons += '\n';
