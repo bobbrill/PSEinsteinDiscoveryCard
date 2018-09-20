@@ -22,7 +22,7 @@ public class PSAPIEinsteinDiscoveryCardController {
             Map<String, Object>respMap = new Map<String, Object>();
             respMap.put('prediction', getPrediction(predOut.prediction));
             respMap.put('reasons', getReasons(predOut.prediction, paramMap.get('section1Limit')));
-            respMap.put('prescriptions', getPrescriptions(predOut.prescriptions, paramMap.get('section2Scale'), paramMap.get('section2Limit')));
+            respMap.put('prescriptions', getPrescriptions(predOut.prescriptions, paramMap.get('section2Limit')));
              
             resp.data = respMap;
         }
@@ -143,11 +143,7 @@ public class PSAPIEinsteinDiscoveryCardController {
 			out += '- ';
 		}
 		
-		if (scale != null) {
-    		out += math.abs(num).setScale(2);
-		} else {
-			out += String.valueOf(math.abs(num));
-		}
+		out += String.valueOf(math.abs(num));
 		
     	return out;
     }
