@@ -102,7 +102,7 @@ public class PSAPIEinsteinDiscoveryCardController {
 				reasons += '\n';
 			}
 			
-			reasons += makeNumberStr(midVal.value);
+			reasons += makeNumberStr(midVal.value, scaleInt);
 			reasons += ' because ';
 			reasons += midVal.columns.get(0).columnName;
 			reasons += ' is '; 
@@ -124,13 +124,13 @@ public class PSAPIEinsteinDiscoveryCardController {
 		// always include other and baseline
     	if (prediction.other != null && prediction.other != 0) {
     		reasons += '\n';
-    		reasons += makeNumberStr(prediction.other);
+    		reasons += makeNumberStr(prediction.other, scaleInt);
     		reasons += ' because of other factors';
     	}
     	
     	if (prediction.baseLine != null && prediction.baseLine != 0) {
     		reasons += '\n';
-    		reasons += makeNumberStr(prediction.baseLine);
+    		reasons += makeNumberStr(prediction.baseLine, scaleInt);
     		reasons += ' from the baseline';
     	}
     	
