@@ -1,19 +1,18 @@
 <aura:component extends="c:PSEinsteinWrapperCard" controller="PSEinsteinDiscoveryCardController" implements="flexipage:availableForRecordHome,flexipage:availableForAllPageTypes,force:hasRecordId" access="global" >
     <ltng:require scripts="/resource/PSJquery172JS" afterScriptsLoaded="{!c.doInit}"	/>
+    <aura:attribute name="predDefId" type="String" default=""/>
     <aura:attribute name="outcomeLabel" type="String" default="Outcome Label"/>
     <aura:attribute name="outcomeUnit" type="String" default=""/>
     <aura:attribute name="outcomeUnitBefore" type="Boolean" default="false"/>
     <aura:attribute name="outcomeUnitSpace" type="Boolean" default="false"/>
-    <aura:attribute name="outcomeField" type="String" default="Discovery_Outcome__c"/>
     <aura:attribute name="outcomeColor" type="String" default="0,25|25,75|75,100"/>
     <aura:attribute name="section1Label" type="String" default="Leading Causes"/>
     <aura:attribute name="section1EmptyMsg" type="String" default="No causes detected"/>
-    <aura:attribute name="section1Field" type="String" default="Discovery_Explanation__c"/>
     <aura:attribute name="section1Color" type="String" default="-100,0|0,0|0,100"/>
     <aura:attribute name="section2Label" type="String" default="How to Improve This"/>
     <aura:attribute name="section2EmptyMsg" type="String" default="No recommendations detected"/>
-    <aura:attribute name="section2Field" type="String" default="Discovery_Prescription__c"/>
     <aura:attribute name="section2Color" type="String" default="-100,0|0,0|0,100"/>
+    
     
     <aura:handler event="force:refreshView" action="{!c.doInit}" />
     
@@ -28,7 +27,7 @@
             </div>
         </div>  
     </div>
-    <aura:renderIf isTrue="{!and(v.section1Field != null, v.section1Field.length > 0)}">
+    <aura:renderIf isTrue="{!and(v.section1Label != null, v.section1Label.length > 0)}">
         <div class="slds-border--bottom"/>
         <div class="slds-grid slds-wrap slds-grid--pull-padded  slds-p-vertical--small" style="background-color: rgb(255, 255, 255); ">
             <div class="slds-size--1-of-1 slds-grid slds-nowrap slds-grid--vertical-align-end slds-p-vertical--x-small slds-p-horizontal--small">
@@ -45,7 +44,7 @@
             </div>
         </div>
     </aura:renderIf>
-    <aura:renderIf isTrue="{!and(v.section2Field != null, v.section2Field.length > 0)}">
+    <aura:renderIf isTrue="{!and(v.section2Label != null, v.section2Label.length > 0)}">
         <div class="slds-border--bottom" />
         <div class="slds-grid slds-wrap slds-grid--pull-padded  slds-p-vertical--small" style="background-color: rgb(255, 255, 255); ">
             <div class="slds-size--1-of-1 slds-grid slds-nowrap slds-grid--vertical-align-end slds-p-vertical--x-small slds-p-horizontal--small">

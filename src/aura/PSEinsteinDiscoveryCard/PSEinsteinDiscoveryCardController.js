@@ -7,14 +7,14 @@
         
         var paramMap = {};
             paramMap['recId'] = recid;
-            paramMap['outcomeField'] = component.get("v.outcomeField");
-            if (component.get("v.section1Field") != null) 
+            paramMap['predDefId'] = component.get("v.predDefId");
+            if (component.get("v.section1Label") != null) 
             {
-                paramMap['section1Field'] = component.get("v.section1Field");
+                paramMap['section1Label'] = component.get("v.section1Label");
             }
-            if (component.get("v.section2Field") != null) 
+            if (component.get("v.section2Label") != null) 
             {
-              paramMap['section2Field'] = component.get("v.section2Field");
+              paramMap['section2Label'] = component.get("v.section2Label");
             }
 
             action.setParams({
@@ -38,7 +38,7 @@
             } else {
                 $('.slds-card__header slds-grid').hide();
                 
-                var outcome = helper.round(resp.data.outcomeField, 1);
+                var outcome = helper.round(resp.data.prediction, 1);
                 var unit = component.get('v.outcomeUnit');
                 var outcomeColor = component.get('v.outcomeColor').trim().split('|');
                 var section1Color = component.get('v.section1Color').trim().split('|');
@@ -90,9 +90,9 @@
                   document.getElementById(globalId + '_score').innerHTML = '<div class="' + color + '">' + outcome + (component.get('v.outcomeUnitSpace') ? ' ': '') + (unit == null ? '' : unit) + '</div>';
                 }
                 
-                if (resp.data.section1Field != undefined)
+                if (resp.data.reasons != undefined)
                 {
-                  var fieldData = resp.data.section1Field.replace(/<p>/gi, "").replace(/<\/p>/gi, '<br>').replace(/\n/gi, '<br>');
+                  var fieldData = resp.data.reasons.replace(/<p>/gi, "").replace(/<\/p>/gi, '<br>').replace(/\n/gi, '<br>');
                   document.getElementById(globalId + '_section1').innerHTML = helper.populateTable(fieldData,{ ranges: section1Color, unit: '', space: component.get('v.outcomeUnitSpace') });
                   //$('#section1').html(myUtil.populateTable(fieldData));
                   //$('#section1').html(myUtil.populateTable(resp.data.section1Field));
@@ -101,9 +101,9 @@
                   document.getElementById(globalId + '_section1').innerHTML = component.get("v.section1EmptyMsg");
                 }
                 
-                if (resp.data.section2Field != undefined)
+                if (resp.data.prescriptions != undefined)
                 {
-                  var fieldData = resp.data.section2Field.replace(/<p>/gi, "").replace(/<\/p>/gi, '<br>').replace(/\n/gi, '<br>');
+                  var fieldData = resp.data.prescriptions.replace(/<p>/gi, "").replace(/<\/p>/gi, '<br>').replace(/\n/gi, '<br>');
                   document.getElementById(globalId + '_section2').innerHTML = helper.populateTable(fieldData,{ ranges: section2Color, unit: '', space: component.get('v.outcomeUnitSpace') });
                   //$('#section2').html(myUtil.populateTable(fieldData));
                   //$('#section2').html(myUtil.populateTable(resp.data.section2Field));
