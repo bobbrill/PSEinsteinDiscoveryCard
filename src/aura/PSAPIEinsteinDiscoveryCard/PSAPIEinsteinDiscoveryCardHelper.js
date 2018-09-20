@@ -69,25 +69,28 @@
             console.log("Clean String: " + cleanStr);
             
             // handle format of other smaller phrases
-            if(cleanStr.indexOf('other smaller') > 0) {
-                scoreStr = cleanStr.substr(0,1) + ' ' + cleanStr.substr(cleanStr.lastIndexOf(' '));
-                scoreNum = parseFloat(scoreStr);
-                desc = cleanStr.substr(1,cleanStr.lastIndexOf(' '));
-                color = this.getColor(scoreNum,params.ranges);
-            }
-            else if(cleanStr.startsWith('From The Baseline') > 0){
-                scoreStr = cleanStr.split(',')[1].replace('+','+ ').replace('-','- ').replace(' + ','+ ').replace(' - ','- ');
+            //if(cleanStr.indexOf('other smaller') > 0) {
+            //    scoreStr = cleanStr.substr(0,1) + ' ' + cleanStr.substr(cleanStr.lastIndexOf(' '));
+            //   scoreNum = parseFloat(scoreStr);
+            //    desc = cleanStr.substr(1,cleanStr.lastIndexOf(' '));
+            //    color = this.getColor(scoreNum,params.ranges);
+            //}
+            //else if(cleanStr.startsWith('From The Baseline') > 0){
+            //    scoreStr = cleanStr.split(',')[1].replace('+','+ ').replace('-','- ').replace(' + ','+ ').replace(' - ','- ');
+            //    scoreNum = parseFloat(scoreStr.replace('+ ','').replace('- ','-'));
+            //    console.log('baseline score: ' + scoreStr);
+            //    desc = cleanStr.split(',')[0]
+            //    color = this.getColor(scoreNum,params.ranges);
+            //}
+            //else {
+                scoreStr = cleanStr.substr(0, cleanStr.indexOf(' ')).replace('+','+ ').replace('-','- ');
                 scoreNum = parseFloat(scoreStr.replace('+ ','').replace('- ','-'));
-                console.log('baseline score: ' + scoreStr);
-                desc = cleanStr.split(',')[0]
-                color = this.getColor(scoreNum,params.ranges);
-            }
-                else {
-                    scoreStr = cleanStr.substr(0, cleanStr.indexOf(' ')).replace('+','+ ').replace('-','- ');
-                    scoreNum = parseFloat(scoreStr.replace('+ ','').replace('- ','-'));
-                    desc = cleanStr.substr(cleanStr.indexOf(' ') + 1).replace('Because','').replace('If You Change','Change');
-                    color = this.getColor(scoreNum,params.ranges);
+                if (params.scale) {
+                	scoreStr = scoreStr.substr(0, cleanStr.indexOf(' ')) + scoreNum.toFixed(params.scale);
                 }
+                desc = cleanStr.substr(cleanStr.indexOf(' ') + 1).replace('Because','').replace('If You Change','Change');
+                color = this.getColor(scoreNum,params.ranges);
+            //}
             console.log('score: ' + scoreStr);
             
             /*if(score.startsWith('-')){

@@ -21,7 +21,7 @@ public class PSAPIEinsteinDiscoveryCardController {
             
             Map<String, Object>respMap = new Map<String, Object>();
             respMap.put('prediction', getPrediction(predOut.prediction));
-            respMap.put('reasons', getReasons(predOut.prediction, paramMap.get('section1Scale'), paramMap.get('section1Limit')));
+            respMap.put('reasons', getReasons(predOut.prediction, paramMap.get('section1Limit')));
             respMap.put('prescriptions', getPrescriptions(predOut.prescriptions, paramMap.get('section2Scale'), paramMap.get('section2Limit')));
              
             resp.data = respMap;
@@ -35,8 +35,7 @@ public class PSAPIEinsteinDiscoveryCardController {
         return  JSON.serialize(resp);
     }
     
-    private static String getPrescriptions(List<ConnectApi.SmartDataDiscoveryPredictCondition> conditions, String scale, String lim) {
-        Integer scaleInt = scale != null ? Integer.valueOf(scale) : null;
+    private static String getPrescriptions(List<ConnectApi.SmartDataDiscoveryPredictCondition> conditions, String lim) {
         Integer limInt = lim != null ? Integer.valueOf(lim) : null;
         
         // expected string output:
@@ -58,7 +57,7 @@ public class PSAPIEinsteinDiscoveryCardController {
 				prescriptions += '\n';
 			} 
 			
-			prescriptions += makeNumberStr(condition.value, scaleInt);
+			prescriptions += makeNumberStr(condition.value);
 			prescriptions += ' if you change ';
 			prescriptions += condition.columns.get(0).columnName;
 			prescriptions += ' to '; 
@@ -84,9 +83,8 @@ public class PSAPIEinsteinDiscoveryCardController {
         return prediction.total;
     }
     
-    private static String getReasons(ConnectApi.SmartDataDiscoveryPredict prediction, String scale, String lim) {
-    	Integer scaleInt = scale != null ? Integer.valueOf(scale) : null;
-        Integer limInt = lim != null ? Integer.valueOf(lim) : null;
+    private static String getReasons(ConnectApi.SmartDataDiscoveryPredict prediction, String lim) {
+    	Integer limInt = lim != null ? Integer.valueOf(lim) : null;
         
         // expected string output:
     	//	+1.546 because requestor__c is 1400 to 1600 and Priority__c is 0 - Unassigned
@@ -102,7 +100,7 @@ public class PSAPIEinsteinDiscoveryCardController {
 				reasons += '\n';
 			}
 			
-			reasons += makeNumberStr(midVal.value, scaleInt);
+			reasons += makeNumberStr(midVal.value);
 			reasons += ' because ';
 			reasons += midVal.columns.get(0).columnName;
 			reasons += ' is '; 
@@ -124,20 +122,20 @@ public class PSAPIEinsteinDiscoveryCardController {
 		// always include other and baseline
     	if (prediction.other != null && prediction.other != 0) {
     		reasons += '\n';
-    		reasons += makeNumberStr(prediction.other, scaleInt);
+    		reasons += makeNumberStr(prediction.other);
     		reasons += ' because of other factors';
     	}
     	
     	if (prediction.baseLine != null && prediction.baseLine != 0) {
     		reasons += '\n';
-    		reasons += makeNumberStr(prediction.baseLine, scaleInt);
+    		reasons += makeNumberStr(prediction.baseLine);
     		reasons += ' from the baseline';
     	}
     	
     	return reasons;
     }
     
-    private static String makeNumberStr(Double num, Integer scale) {
+    private static String makeNumberStr(Double num) {
     	String out = '';
     	if (num >= 0) {
 			out += '+ ';

@@ -12,17 +12,9 @@
             {
                 paramMap['section1Limit'] = component.get("v.section1Limit");
             }
-            if (component.get("v.section1Scale") != null) 
-            {
-              paramMap['section1Scale'] = component.get("v.section1Scale");
-            }
             if (component.get("v.section2Limit") != null) 
             {
                 paramMap['section2Limit'] = component.get("v.section2Limit");
-            }
-            if (component.get("v.section2Scale") != null) 
-            {
-              paramMap['section2Scale'] = component.get("v.section2Scale");
             }
 
             action.setParams({
@@ -101,7 +93,7 @@
                 if (resp.data.reasons != undefined)
                 {
                   var fieldData = resp.data.reasons.replace(/<p>/gi, "").replace(/<\/p>/gi, '<br>').replace(/\n/gi, '<br>');
-                  document.getElementById(globalId + '_section1').innerHTML = helper.populateTable(fieldData,{ ranges: section1Color, unit: '', space: component.get('v.outcomeUnitSpace') });
+                  document.getElementById(globalId + '_section1').innerHTML = helper.populateTable(fieldData,{ ranges: section1Color, unit: '', space: component.get('v.outcomeUnitSpace'), scale: component.get('v.section1Scale') });
                   //$('#section1').html(myUtil.populateTable(fieldData));
                   //$('#section1').html(myUtil.populateTable(resp.data.section1Field));
                 }
@@ -112,7 +104,7 @@
                 if (resp.data.prescriptions != undefined)
                 {
                   var fieldData = resp.data.prescriptions.replace(/<p>/gi, "").replace(/<\/p>/gi, '<br>').replace(/\n/gi, '<br>');
-                  document.getElementById(globalId + '_section2').innerHTML = helper.populateTable(fieldData,{ ranges: section2Color, unit: '', space: component.get('v.outcomeUnitSpace') });
+                  document.getElementById(globalId + '_section2').innerHTML = helper.populateTable(fieldData,{ ranges: section2Color, unit: '', space: component.get('v.outcomeUnitSpace'), scale: component.get('v.section2Scale') });
                   //$('#section2').html(myUtil.populateTable(fieldData));
                   //$('#section2').html(myUtil.populateTable(resp.data.section2Field));
                 }
