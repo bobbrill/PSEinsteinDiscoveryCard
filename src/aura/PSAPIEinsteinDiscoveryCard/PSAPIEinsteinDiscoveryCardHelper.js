@@ -86,7 +86,7 @@
                 scoreStr = cleanStr.substr(0, cleanStr.indexOf(' ')).replace('+','+ ').replace('-','- ');
                 scoreNum = parseFloat(scoreStr.replace('+ ','').replace('- ','-'));
                 if (params.scale && scoreNum) {
-                	scoreStr = scoreStr.substr(0, 2) + scoreNum.toFixed(params.scale).toString();
+                	scoreStr = scoreStr.substr(0, 2) + Math.abs(scoreNum).toFixed(params.scale).toString();
                 }
                 desc = cleanStr.substr(cleanStr.indexOf(' ') + 1).replace('Because','').replace('If You Change','Change');
                 color = this.getColor(scoreNum,params.ranges);
