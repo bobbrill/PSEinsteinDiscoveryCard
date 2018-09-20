@@ -131,7 +131,7 @@ public class PSAPIEinsteinDiscoveryCardController {
 		} else {
 			out += '- ';
 		}
-    	out += String.valueOf(math.abs(num));
+    	out += math.abs(num).format();
     	
     	return out;
     }
