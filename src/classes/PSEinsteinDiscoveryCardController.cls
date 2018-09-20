@@ -126,9 +126,9 @@ public class PSEinsteinDiscoveryCardController {
     private String makeNumberStr(Doublt num) {
     	String out = '';
     	if (num >= 0) {
-			out += '+';
+			out += '+ ';
 		} else {
-			out += '-';
+			out += '- ';
 		}
     	out += num;
     	
