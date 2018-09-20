@@ -114,7 +114,10 @@
 
             }
         });
-        $A.enqueueAction(action);
+        
+        if (component.get("v.predDefId")) {
+        	$A.enqueueAction(action);
+        }
     },
     refresh: function(component, event, helper) {
         var action = component.get('c.getEDInfo');
