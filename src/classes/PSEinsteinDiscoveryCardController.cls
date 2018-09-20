@@ -22,7 +22,7 @@ public class PSEinsteinDiscoveryCardController {
             Map<String, Object>respMap = new Map<String, Object>();
             respMap.put('prediction', getPrediction(predOut.prediction));
             respMap.put('reasons', getReasons(predOut.prediction));
-            respMap.put('prescriptions', getPrescription(predOut.prescriptions));
+            respMap.put('prescriptions', getPrescriptions(predOut.prescriptions));
              
             resp.data = respMap;
         }
@@ -35,7 +35,7 @@ public class PSEinsteinDiscoveryCardController {
         return  JSON.serialize(resp);
     }
     
-    private static String serializePrescriptions(List<ConnectApi.SmartDataDiscoveryPredictCondition> conditions) {
+    private static String getPrescriptions(List<ConnectApi.SmartDataDiscoveryPredictCondition> conditions) {
         // expected string output:
     	//	+10.398 if you change Owner_Name__c to Deeann Alvidrez
     	//	+9.344 if you change Owner_Name__c to Rebecca Streets
@@ -54,7 +54,7 @@ public class PSEinsteinDiscoveryCardController {
 			if (!skipReturn) {
 				prescriptions += '\n';
 			} else {
-				prescriptions = false;
+				skipReturn = false;
 			}
 			
 			prescriptions += makeNumberStr(condition.value);
@@ -123,7 +123,7 @@ public class PSEinsteinDiscoveryCardController {
     	return reasons;
     }
     
-    private String makeNumberStr(Double num) {
+    private static String makeNumberStr(Double num) {
     	String out = '';
     	if (num >= 0) {
 			out += '+ ';
