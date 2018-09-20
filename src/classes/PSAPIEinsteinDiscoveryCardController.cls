@@ -1,11 +1,11 @@
-public class PSEinsteinDiscoveryCardController {
+public class PSAPIEinsteinDiscoveryCardController {
     @AuraEnabled
     public static String getEDInfo(String params)
     {
         System.debug('getEDInfo invoked...');
         System.debug('params=' + params);
         Map<String, String> paramMap = (Map<String, String>)JSON.deserialize(params,   Map<String, String>.class);
-        PSResponse resp = new PSResponse();
+        PSAPIResponse resp = new PSAPIResponse();
         
         try
         {
@@ -28,7 +28,7 @@ public class PSEinsteinDiscoveryCardController {
         }
         catch (exception e)
         {
-            resp.status = PSResponse.ERROR;
+            resp.status = PSAPIResponse.ERROR;
             resp.msg = e.getMessage();
         }
         
