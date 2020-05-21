@@ -9,20 +9,32 @@ public class PSAPIEinsteinDiscoveryCardController {
         
         try
         {
+
             String recId = paramMap.get('recId');
             String predDefId = paramMap.get('predDefId');
             
-            ConnectApi.SmartDataDiscoveryPredictInput inputRep = new ConnectApi.SmartDataDiscoveryPredictInput();
-            inputRep.entityId = recId;
-        	inputRep.predictionDefinitionId = predDefId;
+            ConnectApi.SmartDataDiscoveryPredictInputRecords inputRep = new ConnectApi.SmartDataDiscoveryPredictInputRecords();
+            inputRep.records = new list<string>{recId};
+        	inputRep.predictionDefinition = predDefId;
         
         	// using the connect api here - could be REST just as easilly
-            ConnectApi.SmartDataDiscoveryPrediction predOut = ConnectApi.SmartDataDiscovery.predict(inputRep);
+            ConnectApi.SmartDataDiscoveryPrediction predOut;
+            
+            if(!Test.isRunningTest())
+            {
+                 predOut = ConnectApi.SmartDataDiscovery.predict(inputRep);    
+            }
+            else
+            {
+                 predOut = generateMockPredictionForTest();
+            }
+            
             
             Map<String, Object>respMap = new Map<String, Object>();
-            respMap.put('prediction', getPrediction(predOut.prediction));
-            respMap.put('reasons', getReasons(predOut.prediction, paramMap.get('section1Limit')));
-            respMap.put('prescriptions', getPrescriptions(predOut.prescriptions, paramMap.get('section2Limit')));
+            respMap.put('prediction', getPrediction((ConnectApi.SmartDataDiscoveryPredictObject) predOut.predictions[0]));
+            respMap.put('reasons', getReasons((ConnectApi.SmartDataDiscoveryPredictObject) predOut.predictions[0], paramMap.get('section1Limit')));
+            respMap.put('prescriptions', getPrescriptions(((ConnectApi.SmartDataDiscoveryPredictObject)predOut.predictions[0]).prescriptions, paramMap.get('section2Limit'),(ConnectApi.SmartDataDiscoveryPredictObject) predOut.predictions[0]));
+             
              
             resp.data = respMap;
         }
@@ -35,7 +47,7 @@ public class PSAPIEinsteinDiscoveryCardController {
         return  JSON.serialize(resp);
     }
     
-    private static String getPrescriptions(List<ConnectApi.SmartDataDiscoveryPredictCondition> conditions, String lim) {
+    private static String getPrescriptions(List<ConnectApi.SmartDataDiscoveryPredictCondition> conditions, String lim, ConnectApi.SmartDataDiscoveryPredictObject prediction) {
         Integer limInt = lim != null ? Integer.valueOf(lim) : null;
         
         // expected string output:
@@ -79,11 +91,11 @@ public class PSAPIEinsteinDiscoveryCardController {
 		return prescriptions;
     }
     
-    private static Double getPrediction(ConnectApi.SmartDataDiscoveryPredict prediction) {
-        return prediction.total;
+    private static Double getPrediction(ConnectApi.SmartDataDiscoveryPredictObject prediction) {
+        return prediction.prediction.total;
     }
     
-    private static String getReasons(ConnectApi.SmartDataDiscoveryPredict prediction, String lim) {
+     private static String getReasons(ConnectApi.SmartDataDiscoveryPredictObject prediction, String lim) {
     	Integer limInt = lim != null ? Integer.valueOf(lim) : null;
         
         // expected string output:
@@ -95,7 +107,7 @@ public class PSAPIEinsteinDiscoveryCardController {
 		String reasons = '';
 		
 		Integer numReasons = 0;
-		for (ConnectApi.SmartDataDiscoveryPredictCondition midVal : prediction.middleValues) {
+		for (ConnectApi.SmartDataDiscoveryPredictCondition midVal : prediction.prediction.middleValues) {
 			if (numReasons > 0) {
 				reasons += '\n';
 			}
@@ -120,15 +132,15 @@ public class PSAPIEinsteinDiscoveryCardController {
 		}
 		
 		// always include other and baseline
-    	if (prediction.other != null && prediction.other != 0) {
+    	if (prediction.prediction.other != null && prediction.prediction.other != 0) {
     		reasons += '\n';
-    		reasons += makeNumberStr(prediction.other);
+    		reasons += makeNumberStr(prediction.prediction.other);
     		reasons += ' because of other factors';
     	}
     	
-    	if (prediction.baseLine != null && prediction.baseLine != 0) {
+    	if (prediction.prediction.baseLine != null && prediction.prediction.baseLine != 0) {
     		reasons += '\n';
-    		reasons += makeNumberStr(prediction.baseLine);
+    		reasons += makeNumberStr(prediction.prediction.baseLine);
     		reasons += ' from the baseline';
     	}
     	
@@ -146,5 +158,48 @@ public class PSAPIEinsteinDiscoveryCardController {
 		out += String.valueOf(math.abs(num));
 		
     	return out;
+    }
+    public static ConnectApi.SmartDataDiscoveryPrediction generateMockPredictionForTest()
+    {
+        ConnectApi.SmartDataDiscoveryPrediction predictions = new ConnectApi.SmartDataDiscoveryPrediction();
+        ConnectApi.SmartDataDiscoveryPredictObject prediction = new ConnectApi.SmartDataDiscoveryPredictObject();
+        ConnectApi.SmartDataDiscoveryPredict predictionValue = new ConnectApi.SmartDataDiscoveryPredict();
+        ConnectApi.SmartDataDiscoveryPredictCondition commentary = new ConnectApi.SmartDataDiscoveryPredictCondition();
+        ConnectApi.SmartDataDiscoveryPredictColumn column = new ConnectApi.SmartDataDiscoveryPredictColumn();
+        ConnectApi.SmartDataDiscoveryPredictColumn recommendationcolumn = new ConnectApi.SmartDataDiscoveryPredictColumn();
+        ConnectApi.SmartDataDiscoveryPredictCondition Recommendations = new ConnectApi.SmartDataDiscoveryPredictCondition();
+        
+        //Recomendation fake data
+        Recommendations.value = 6;
+        recommendationcolumn.columnName = 'TestColumn';
+        recommendationcolumn.columnValue = 'Test2';
+        Recommendations.columns = new List<ConnectApi.SmartDataDiscoveryPredictColumn>();
+        Recommendations.columns.add(recommendationcolumn);
+        
+        //Commentary fake data
+        column.columnName = 'testcolumn';
+        column.columnValue = 'test';
+        commentary.value = 3;
+        commentary.columns = new List<ConnectApi.SmartDataDiscoveryPredictColumn>();
+        commentary.columns.add(column);
+		
+        //Fake prediction value
+        predictionValue.total = 6;
+        predictionValue.other = 10;
+        predictionValue.baseLine = 4;
+        predictionValue.middleValues = new list<ConnectApi.SmartDataDiscoveryPredictCondition>();
+        predictionValue.middleValues.add(commentary);
+      
+        
+        //Fake Predction object
+        prediction.prediction = predictionValue;
+        prediction.prescriptions = new list<ConnectApi.SmartDataDiscoveryPredictCondition>();
+        prediction.prescriptions.add(Recommendations);
+
+        //Fake list of predictions
+        predictions.predictions = new list<ConnectApi.SmartDataDiscoveryPredictObject>();
+        predictions.predictions.add(prediction);
+        
+        return predictions;
     }
 }
