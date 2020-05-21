@@ -3,6 +3,7 @@
     <types>
         <members>PSAPIEinsteinDiscoveryCardController</members>
         <members>PSAPIResponse</members>
+        <members>PSAPITestClass</members>
         <name>ApexClass</name>
     </types>
     <types>
