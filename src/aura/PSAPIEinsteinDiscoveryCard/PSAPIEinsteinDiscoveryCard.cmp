@@ -1,4 +1,4 @@
-<aura:component extends="c:PSAPIEinsteinWrapperCard" controller="PSAPIEinsteinDiscoveryCardController" implements="flexipage:availableForRecordHome,flexipage:availableForAllPageTypes,force:hasRecordId" access="global" >
+<aura:component extends="c:PSAPIEinsteinWrapperCard" controller="PSAPIEinsteinDiscoveryCardController" implements="flexipage:availableForRecordHome,flexipage:availableForAllPageTypes,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
     <ltng:require scripts="/resource/PSAPIJquery172JS" afterScriptsLoaded="{!c.doInit}"	/>
     <aura:attribute name="predDefId" type="String" default=""/>
     
